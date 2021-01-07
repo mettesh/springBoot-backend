@@ -1,5 +1,8 @@
 type Query {
+  allBooks: [Book]
   bookById(id: ID): Book
+
+  allAuthors: [Book]
   authorById(id: ID): Author
 }
 

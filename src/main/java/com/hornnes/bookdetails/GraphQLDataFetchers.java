@@ -11,6 +11,7 @@ import java.util.Map;
 @Component
 public class GraphQLDataFetchers {
 
+    // Dummy data. To be replaced with data from DB
     private static List<Map<String, String>> books = Arrays.asList(
             ImmutableMap.of("id", "book-1",
                     "name", "Harry Potter and the Philosopher's Stone",
@@ -38,8 +39,19 @@ public class GraphQLDataFetchers {
                     "lastName", "Rice")
     );
 
+    // A data fetcher is responsible for returning a data value back for a given graphql field
+    public DataFetcher getAllBooksFetcher() {
+        return dataFetchingEnvironment -> books;
+    }
+
+
+    public DataFetcher getAllAuthorsFetcher() {
+        return dataFetchingEnvironment -> authors;
+    }
+
     public DataFetcher getBookByIdDataFetcher() {
         return dataFetchingEnvironment -> {
+            // Gets the argument
             String bookId = dataFetchingEnvironment.getArgument("id");
             return books
                     .stream()
@@ -51,8 +63,22 @@ public class GraphQLDataFetchers {
 
     public DataFetcher getAuthorDataFetcher() {
         return dataFetchingEnvironment -> {
+            // Gets the book where we want to se the author (Source)
             Map<String, String> book = dataFetchingEnvironment.getSource();
+            // Gets this books author id
             String authorId = book.get("authorId");
+            // Iterate through the books and finds the match
+            return authors
+                    .stream()
+                    .filter(author -> author.get("id").equals(authorId))
+                    .findFirst()
+                    .orElse(null);
+        };
+    }
+
+    public DataFetcher getAuthorByIdFetcher() {
+        return dataFetchingEnvironment -> {
+            String authorId = dataFetchingEnvironment.getArgument("id");
             return authors
                     .stream()
                     .filter(author -> author.get("id").equals(authorId))
