@@ -2,19 +2,23 @@ type Query {
   allBooks: [Book]
   bookById(id: ID): Book
 
-  allAuthors: [Book]
-  authorById(id: ID): Author
+  # allAuthors: [Book]
+  # authorById(id: ID): Author
 }
 
 type Book {
   id: ID
   name: String
-  pageCount: Int
-  author: Author
+  author: String
+  userRating: Float
+  reviews: Int
+  price: Int
+  year: String
+  genre: String
 }
 
-type Author {
-  id: ID
-  firstName: String
-  lastName: String
-}
+#type Author {
+#  id: ID
+#  firstName: String
+#  lastName: String
+#}

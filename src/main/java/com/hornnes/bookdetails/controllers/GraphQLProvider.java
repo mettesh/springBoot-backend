@@ -1,4 +1,4 @@
-package com.hornnes.bookdetails;
+package com.hornnes.bookdetails.controllers;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
@@ -22,11 +22,11 @@ import static graphql.schema.idl.TypeRuntimeWiring.newTypeWiring;
 public class GraphQLProvider {
 
     @Autowired
-    GraphQLDataFetchers graphQLDataFetchers;
+    MainController mainController;
 
     private GraphQL graphQL;
 
-    @PostConstruct
+    @PostConstruct // @PostConstruct annotation, it gets executed after the spring bean is initialized
     public void init() throws IOException {
         // Gets the schemas
         URL url = Resources.getResource("schema.graphqls");
@@ -47,15 +47,10 @@ public class GraphQLProvider {
     private RuntimeWiring buildWiring() {
         return RuntimeWiring.newRuntimeWiring()
                 .type(newTypeWiring("Query")
-                        .dataFetcher("authorById", graphQLDataFetchers.getAuthorByIdFetcher()))
+                        .dataFetcher("bookById", mainController.getBookByIdDataFetcher()))
+                //.type(newTypeWiring("Book").dataFetcher("author", graphQLDataFetchers.getAuthorDataFetcher()))
                 .type(newTypeWiring("Query")
-                        .dataFetcher("bookById", graphQLDataFetchers.getBookByIdDataFetcher()))
-                .type(newTypeWiring("Book")
-                        .dataFetcher("author", graphQLDataFetchers.getAuthorDataFetcher()))
-                .type(newTypeWiring("Query")
-                        .dataFetcher("allBooks", graphQLDataFetchers.getAllBooksFetcher()))
-                .type(newTypeWiring("Query")
-                        .dataFetcher("allAuthors", graphQLDataFetchers.getAllAuthorsFetcher()))
+                        .dataFetcher("allBooks", mainController.getAllBooksFetcher()))
                 .build();
 
         // If attribute name mismatch we need to register the additional DataFetcher
