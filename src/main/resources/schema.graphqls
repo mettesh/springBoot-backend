@@ -22,3 +22,28 @@ type Book {
 #  firstName: String
 #  lastName: String
 #}
+
+type Mutation {
+  # addBook(input: AddBookInput)
+  addBook(
+    name: String
+    author: String
+    userRating: Float
+    reviews: Int
+    price: Int
+    year: String
+    genre: String
+  )
+  : Book!
+}
+
+# Can be combined:
+input AddBookInput {
+  name: String
+  author: String
+  userRating: Float
+  reviews: Int
+  price: Int
+  year: String
+  genre: String
+}

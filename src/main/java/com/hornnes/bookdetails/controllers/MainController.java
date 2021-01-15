@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
+import java.util.Map;
+
 @Controller // This means that this class is a Controller
 @RequestMapping(path="/library")
 public class MainController {
@@ -25,7 +28,8 @@ public class MainController {
             @RequestParam Double userRating,
             @RequestParam Integer reviews,
             @RequestParam Integer price,
-            @RequestParam String year) {
+            @RequestParam String year,
+            @RequestParam String genre) {
         // @ResponseBody means the returned String is the response, not a view name
         // @RequestParam means it is a parameter from the GET or POST request
 
@@ -36,6 +40,7 @@ public class MainController {
         book.setReviews(reviews);
         book.setPrice(price);
         book.setYear(year);
+        book.setGenre(genre);
         libraryRepository.save(book);
         return "Book successfully added";
     }
@@ -58,6 +63,26 @@ public class MainController {
             // Gets the argument
             Integer bookId = Integer.parseInt(dataFetchingEnvironment.getArgument("id"));
             return libraryRepository.findById(bookId);
+        };
+    }
+
+    public DataFetcher addBook () {
+        return dataFetchingEnvironment -> {
+            // Gets the argument
+            Map arguments = dataFetchingEnvironment.getArguments();
+
+            Book book = new Book();
+            book.setName((String) arguments.getOrDefault("name", null));
+            book.setAuthor((String) arguments.getOrDefault("author", null));
+            book.setUserRating((Double) arguments.getOrDefault("userRating", null));
+            book.setReviews((Integer) arguments.getOrDefault("reviews", null));
+            book.setPrice((Integer) arguments.getOrDefault("price", null));
+            book.setYear((String) arguments.getOrDefault("year", null));
+            book.setGenre((String) arguments.getOrDefault("genre", null));
+            libraryRepository.save(book);
+
+            // TODO: Send error messsage if not successsfull
+            return book;
         };
     }
 }

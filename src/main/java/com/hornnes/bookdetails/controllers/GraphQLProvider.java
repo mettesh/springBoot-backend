@@ -51,6 +51,8 @@ public class GraphQLProvider {
                 //.type(newTypeWiring("Book").dataFetcher("author", graphQLDataFetchers.getAuthorDataFetcher()))
                 .type(newTypeWiring("Query")
                         .dataFetcher("allBooks", mainController.getAllBooksFetcher()))
+                .type(newTypeWiring("Mutation")
+                        .dataFetcher("addBook", mainController.addBook()))
                 .build();
 
         // If attribute name mismatch we need to register the additional DataFetcher
