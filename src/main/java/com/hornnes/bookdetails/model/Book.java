@@ -13,7 +13,7 @@ public class Book {
 
     private String name;
 
-    private String author;
+    private Integer author;
 
     private Double userRating;
 
@@ -41,13 +41,11 @@ public class Book {
         this.name = name;
     }
 
-    public String getAuthor() {
+    public Integer getAuthor() {
         return author;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
-    }
+    public void setAuthor(Integer author) { this.author = author; }
 
     public Double getUserRating() {
         return userRating;
@@ -88,7 +86,4 @@ public class Book {
     public void setGenre(String genre) {
         this.genre = genre;
     }
-
-
-
 }

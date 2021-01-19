@@ -1,4 +1,4 @@
-package com.hornnes.bookdetails.controllers;
+package com.hornnes.bookdetails.controllers.graphQL;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
@@ -11,18 +11,16 @@ import graphql.schema.idl.TypeDefinitionRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
-
 import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.net.URL;
-
 import static graphql.schema.idl.TypeRuntimeWiring.newTypeWiring;
 
 @Component
-public class GraphQLProvider {
+public class GraphQlProvider {
 
     @Autowired
-    MainController mainController;
+    GraphQlController graphQLController;
 
     private GraphQL graphQL;
 
@@ -47,12 +45,16 @@ public class GraphQLProvider {
     private RuntimeWiring buildWiring() {
         return RuntimeWiring.newRuntimeWiring()
                 .type(newTypeWiring("Query")
-                        .dataFetcher("bookById", mainController.getBookByIdDataFetcher()))
-                //.type(newTypeWiring("Book").dataFetcher("author", graphQLDataFetchers.getAuthorDataFetcher()))
+                        .dataFetcher("bookById", graphQLController.getBookByIdDataFetcher()))
+                .type(newTypeWiring("Book").dataFetcher("author", graphQLController.getAuthorForBook()))
                 .type(newTypeWiring("Query")
-                        .dataFetcher("allBooks", mainController.getAllBooksFetcher()))
+                        .dataFetcher("allBooks", graphQLController.getAllBooksFetcher()))
+                .type(newTypeWiring("Query")
+                        .dataFetcher("allAuthors", graphQLController.getAllAuthorsDataFetcher()))
+                .type(newTypeWiring("Query")
+                        .dataFetcher("authorById", graphQLController.getAuthorsByIdDataFetcher()))
                 .type(newTypeWiring("Mutation")
-                        .dataFetcher("addBook", mainController.addBook()))
+                        .dataFetcher("addBook", graphQLController.addBook()))
                 .build();
 
         // If attribute name mismatch we need to register the additional DataFetcher
