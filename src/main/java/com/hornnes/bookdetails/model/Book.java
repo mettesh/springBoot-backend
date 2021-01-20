@@ -1,19 +1,19 @@
 package com.hornnes.bookdetails.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity // This tells Hibernate to make a table out of this class
+@Table(name = "book")
 public class Book {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY) // IDENTITY: ID is AI in Database
-    private Integer id;
+    private Integer book_id;
 
     private String name;
 
-    private Integer author;
+    @ManyToOne()
+    @JoinColumn(name = "author", referencedColumnName = "author_id")
+    private Author author;
 
     private Double userRating;
 
@@ -26,11 +26,11 @@ public class Book {
     private String genre;
 
     public Integer getId() {
-        return id;
+        return book_id;
     }
 
     public void setId(Integer id) {
-        this.id = id;
+        this.book_id = id;
     }
 
     public String getName() {
@@ -41,11 +41,11 @@ public class Book {
         this.name = name;
     }
 
-    public Integer getAuthor() {
+    public Author getAuthor() {
         return author;
     }
 
-    public void setAuthor(Integer author) { this.author = author; }
+    public void setAuthor(Author author) { this.author = author; }
 
     public Double getUserRating() {
         return userRating;

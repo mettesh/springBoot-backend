@@ -1,5 +1,6 @@
 package com.hornnes.bookdetails.controllers.restAPI;
 
+import com.hornnes.bookdetails.model.Author;
 import com.hornnes.bookdetails.model.Book;
 import com.hornnes.bookdetails.repository.AuthorRepository;
 import com.hornnes.bookdetails.repository.BookRepository;
@@ -20,7 +21,7 @@ public class RestController {
     @PostMapping(path="/add") // Map ONLY POST Requests
     public @ResponseBody String addNewUser (
             @RequestParam String name,
-            @RequestParam Integer author,
+            @RequestParam String author,
             @RequestParam Double userRating,
             @RequestParam Integer reviews,
             @RequestParam Integer price,
@@ -29,14 +30,19 @@ public class RestController {
         // @ResponseBody means the returned String is the response, not a view name
         // @RequestParam means it is a parameter from the GET or POST request
 
+        Author newAuthor = new Author();
+        newAuthor.setName(author);
         Book book = new Book();
+
         book.setName(name);
-        book.setAuthor(author);
+        book.setAuthor(newAuthor);
         book.setUserRating(userRating);
         book.setReviews(reviews);
         book.setPrice(price);
         book.setYear(year);
         book.setGenre(genre);
+
+        authorRepository.save(newAuthor);
         bookRepository.save(book);
         return "Book successfully added";
     }

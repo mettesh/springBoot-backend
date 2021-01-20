@@ -52,7 +52,7 @@ public class GraphQlController {
             // Gets the source (The book)
             Book book = dataFetchingEnvironment.getSource();
             // Find the books author
-            Integer authorId = book.getAuthor();
+            Integer authorId = book.getAuthor().getId();
             // returns author with the matching id
             return authorRepository.findById(authorId);
         };
@@ -67,14 +67,19 @@ public class GraphQlController {
             Map arguments = dataFetchingEnvironment.getArguments();
 
             Book book = new Book();
+            Author author = new Author();
+
+            author.setName((String) arguments.getOrDefault("author", null));
 
             book.setName((String) arguments.getOrDefault("name", null));
-            book.setAuthor((Integer) arguments.getOrDefault("author", null));
+            book.setAuthor(author);
             book.setUserRating((Double) arguments.getOrDefault("userRating", null));
             book.setReviews((Integer) arguments.getOrDefault("reviews", null));
             book.setPrice((Integer) arguments.getOrDefault("price", null));
             book.setYear((String) arguments.getOrDefault("year", null));
             book.setGenre((String) arguments.getOrDefault("genre", null));
+
+            authorRepository.save(author);
             bookRepository.save(book);
 
             // TODO: Send error messsage if not successsfull

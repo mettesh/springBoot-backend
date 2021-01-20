@@ -28,7 +28,7 @@ type Mutation {
   # addBook(input: AddBookInput)
   addBook(
     name: String
-    author: Int
+    author: String
     userRating: Float
     reviews: Int
     price: Int
