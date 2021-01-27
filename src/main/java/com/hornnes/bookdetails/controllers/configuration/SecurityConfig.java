@@ -1,4 +1,4 @@
-package com.hornnes.bookdetails.controllers.restAPI;
+package com.hornnes.bookdetails.controllers.configuration;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -20,9 +20,10 @@ public class SecurityConfig extends ResourceServerConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .mvcMatchers("/restapi/public").permitAll()
-                .antMatchers("/restapi/allBooks").access("#oauth2.hasScope('see:books')")
+                .antMatchers("/restapi/allBooks").authenticated()
                 .antMatchers("/restapi/allAuthors").access("#oauth2.hasScope('see:authors')")
                 .mvcMatchers("/restapi/**").authenticated()
+                .mvcMatchers("/graphql").authenticated()
                 .anyRequest().permitAll();
     }
 

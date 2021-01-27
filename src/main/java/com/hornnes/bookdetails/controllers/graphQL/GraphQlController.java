@@ -24,7 +24,6 @@ public class GraphQlController {
      *    QUERIES    *
      * * * * * * * * */
     // A data fetcher is responsible for returning a data value back for a given graphql field
-    @CrossOrigin(origins = "https://localhost:19006")
     public DataFetcher getAllBooksFetcher() {
         return dataFetchingEnvironment -> bookRepository.findAll();
     }
@@ -32,7 +31,7 @@ public class GraphQlController {
     public DataFetcher getBookByIdDataFetcher() {
         return dataFetchingEnvironment -> {
             // Gets the argument
-            Integer bookId = Integer.parseInt(dataFetchingEnvironment.getArgument("id"));
+            Integer bookId = dataFetchingEnvironment.getArgument("id");
             return bookRepository.findById(bookId);
         };
     }
@@ -41,7 +40,7 @@ public class GraphQlController {
 
     public DataFetcher getAuthorsByIdDataFetcher() {
         return dataFetchingEnvironment -> {
-            Integer authorId = Integer.parseInt(dataFetchingEnvironment.getArgument("id"));
+            Integer authorId = dataFetchingEnvironment.getArgument("id");
             return authorRepository.findById(authorId);
         };
     }

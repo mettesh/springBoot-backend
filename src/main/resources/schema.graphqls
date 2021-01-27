@@ -1,15 +1,15 @@
 type Query {
   allBooks: [Book]
-  bookById(id: ID): Book
+  bookById(id: Int): Book
   allAuthors: [Author]
-  authorById(id: ID): Author
+  authorById(id: Int): Author
 
   # allAuthors: [Book]
   # authorById(id: ID): Author
 }
 
 type Book {
-  id: ID
+  id: Int
   name: String
   author: Author
   userRating: Float
@@ -20,7 +20,7 @@ type Book {
 }
 
 type Author {
-  id: ID
+  id: Int
   name: String
 }
 
