@@ -7,6 +7,8 @@ import com.hornnes.bookdetails.repository.BookRepository;
 import graphql.schema.DataFetcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
+
 import java.util.Map;
 
 @Controller // This means that this class is a Controller
@@ -22,6 +24,7 @@ public class GraphQlController {
      *    QUERIES    *
      * * * * * * * * */
     // A data fetcher is responsible for returning a data value back for a given graphql field
+    @CrossOrigin(origins = "https://localhost:19006")
     public DataFetcher getAllBooksFetcher() {
         return dataFetchingEnvironment -> bookRepository.findAll();
     }
